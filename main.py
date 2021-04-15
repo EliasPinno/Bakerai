@@ -6,6 +6,7 @@ from process_data import  allWords, convoLabels, data
 from NN import convert_input_to_bow
 from NN import model
 import clientGUI as c
+from google_trans_new import google_translator  
 # these are the model and function for chatting
 # from process_data import ..... (you can load functions, varibles....)
 
@@ -14,6 +15,8 @@ import clientGUI as c
 #terminate the loop after the user inputs a reserved value of your choosing
 DEFAULT_RESPONSES = ["What are you talking about? I don't get it", "Sorry, I can't seem to understand... :(", "Sorry, I am not smart enough to understand... visit our website BakeSakura.com for more information","uhhh... I am not going to pretend I understand","Sorry, can you rephrase your question please, I can't understand."]
 NEGATIVE_RESPONSES = ["You seem unhappy. I am sorry :("]
+
+TRANSLATOR = google_translator()  
 
 #start chat - 'quit' to quit.
 
@@ -75,7 +78,12 @@ def output_depending_on_sentiment(sentiment,output):
 
         # extract the correct response from intents.json.
 
+def translate(userMessage: str, src: str, tgt: str):
+    reply = TRANSLATOR.translate(userMessage, lang_src=src, lang_tgt=tgt)  
+    return reply
+
 if __name__ == "__main__":
     #start()
-    client = c.bakerClient()
-    client.mainloop()
+    #client = c.bakerClient()
+    #client.mainloop()
+    print(translate("Hello","en","fr"))

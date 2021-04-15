@@ -25,6 +25,9 @@ class bakerClient(tk.Tk):
             mainFrame.grid_rowconfigure(index=i, weight=1)
             mainFrame.grid_columnconfigure(index=i, weight=1)
         self.loaded_clf = m.load_sentiment_analysis()[0]
+
+        # Create the language map
+        self.languages = {"English": "en", "Français": "fr", "Русский": "ru", "Español": "es", "Suomi": "fi"}
         
         # Elements of the main frame #
         # Title
@@ -48,22 +51,34 @@ class bakerClient(tk.Tk):
         sendButton = tk.Button(mainFrame, text="Send message", command=lambda: self.getResponse())
         sendButton.grid(row=5, column=6, columnspan=1, sticky="EW")
         self.userInput.bind("<Return>", lambda x: self.getResponse())
+        # Language selector
+        optionList = list(self.languages.keys())
+        self.lan = tk.StringVar()
+        self.lan.set(optionList[0]) # Set the current language to english
+        self.lanSelection = tk.OptionMenu(mainFrame, self.lan,  *optionList)
+        self.lanSelection.grid(row=5, column = 7, columnspan=1, sticky="EW")
 
     def getResponse(self):
         # Get user message
         userMessage = self.userInput.get()
+        # Language is usable forms
+        shortLan = self.languages[self.lan.get()]
         # Ignore empty messages
         if userMessage == "":
             return
         # Clear the user input
         self.userInput.delete(0, "end")
+        # Translate input to english
+        userEnglish = m.translate(userMessage, shortLan, 'en')
         # Get our reply
-        reply = "BakerAI: " + m.getFinalOutput(self.loaded_clf,userMessage) + "\n"
+        reply = m.getFinalOutput(self.loaded_clf,userMessage) + "\n"
+        # Translate reply to proper language
+        replyLan = "BakerAI: " + m.translate(reply, 'en', shortLan)
+        userEnglish = "You: " + userEnglish + "\n"
         # Send reply to client
-        storedUserMessage = "You: " + userMessage + "\n"
         self.outputBox.configure(state="normal")
-        self.outputBox.insert(tk.END, storedUserMessage) 
-        self.outputBox.insert(tk.END, reply) 
+        self.outputBox.insert(tk.END, userEnglish) 
+        self.outputBox.insert(tk.END, replyLan) 
         self.outputBox.configure(state="disabled")
 
 
