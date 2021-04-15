@@ -54,7 +54,7 @@ class bakerClient(tk.Tk):
         # Language selector
         optionList = list(self.languages.keys())
         self.lan = tk.StringVar()
-        self.lan.set(optionList[0])
+        self.lan.set(optionList[0]) # Set the current language to english
         self.lanSelection = tk.OptionMenu(mainFrame, self.lan,  *optionList)
         self.lanSelection.grid(row=5, column = 7, columnspan=1, sticky="EW")
 
