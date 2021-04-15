@@ -25,8 +25,9 @@ class bakerClient(tk.Tk):
             mainFrame.grid_rowconfigure(index=i, weight=1)
             mainFrame.grid_columnconfigure(index=i, weight=1)
         self.loaded_clf = m.load_sentiment_analysis()[0]
+
         # Create the language map
-        self.languages = {"English": "en", "French": "fr", "Russian": "ru"}
+        self.languages = {"English": "en", "Français": "fr", "Русский": "ru", "Español": "es", "Suomi": "fi"}
         
         # Elements of the main frame #
         # Title
@@ -51,7 +52,7 @@ class bakerClient(tk.Tk):
         sendButton.grid(row=5, column=6, columnspan=1, sticky="EW")
         self.userInput.bind("<Return>", lambda x: self.getResponse())
         # Language selector
-        optionList = ("English","French","Russian")
+        optionList = list(self.languages.keys())
         self.lan = tk.StringVar()
         self.lan.set(optionList[0])
         self.lanSelection = tk.OptionMenu(mainFrame, self.lan,  *optionList)
