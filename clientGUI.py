@@ -41,6 +41,7 @@ class bakerClient(tk.Tk):
         self.outputBox.grid(row=3, column=1, columnspan=7, rowspan=1, sticky="")
         self.outputBox.insert(tk.END,"BakerAI: Hey there! How can I help you? \n")
         self.outputBox.configure(state="disabled")
+        # Create a scrollbar and configure it
         scrollbar = tk.Scrollbar(self)
         scrollbar.config(command = self.outputBox.yview)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -71,11 +72,10 @@ class bakerClient(tk.Tk):
         self.userInput.delete(0, "end")
         # Check if the wiki command is in the chat
         if "wiki " == userMessage.lower()[0:5]:
-            # Send user message without the wiki portion    
+            # Send user message without the wiki portion, and save the response  
             wikiReply = self.wikiResponse(userMessage[5:], shortLan) 
             self.addExchange(userMessage, wikiReply)
             return
-        
         # Translate input to english to send to our bot
         userEnglish = m.translate(userMessage, shortLan, 'en')
         # Get our reply
@@ -86,11 +86,14 @@ class bakerClient(tk.Tk):
 
     
     def wikiResponse(self, userMessage, lan):
+        # Set the wiki language and get a response
         m.setWikiLan(lan)
         topResult, summary = m.getTopSearch(userMessage)
         if topResult != -1:
+            # Translate the wrapping text, and get the display that response
             outputStr = f'{m.translate("Are you talking about","en",lan)} {topResult.title}? {m.translate("Here is what I know about this based on wikipedia.","en",lan)} \n{m.translate("A link to the page is:","en",lan)} {topResult.url}\n{m.translate("Here is the first 3 sentences of the summary:","en",lan)}\n{summary}'
         else:
+            # If the wiki search returned no results, return this string translated
             outputStr = m.translate("I don\'t have any hits for that search, sorry!","en",lan)
         return outputStr 
     

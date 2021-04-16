@@ -98,6 +98,6 @@ def setWikiLan(lan: str):
 
 if __name__ == "__main__":
     #start()
-    #client = c.bakerClient()
-    #client.mainloop()
-    print(translate("Hello","en","fr"))
+    client = c.bakerClient()
+    client.mainloop()
+    #print(translate("Hello","en","fr"))
