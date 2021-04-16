@@ -81,7 +81,7 @@ class bakerClient(tk.Tk):
         # Get our reply
         reply = m.getFinalOutput(self.loaded_clf,userEnglish)
         # Translate reply to proper language
-        replyLan = "BakerAI: " + m.translate(reply, 'en', shortLan) + "\n"
+        replyLan = m.translate(reply, 'en', shortLan)
         self.addExchange(userMessage,replyLan)
 
     
