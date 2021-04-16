@@ -30,9 +30,12 @@ class bakerClient(tk.Tk):
         self.languages = {"English": "en", "Français": "fr", "Русский": "ru", "Español": "es", "Suomi": "fi"}
         
         # Elements of the main frame #
-        # Title
+        # Title label
         title = tk.Label(mainFrame, text="Welcome to Sakura's very own BakerAI!", font=TITLE_FONT)
         title.grid(row=1,column=1,columnspan=7)
+        # Add labels for input
+        entryLabel = tk.Label(mainFrame, text="Enter your text below! Type 'Wiki <text>' to query Wikipedia.", font=FONT)
+        entryLabel.grid(row=4, column=1, columnspan=4, sticky="")
         # What we will change to show output
         self.outputBox = tk.Text(mainFrame, font=FONT)
         self.outputBox.grid(row=3, column=1, columnspan=7, rowspan=1, sticky="")
@@ -44,8 +47,6 @@ class bakerClient(tk.Tk):
         self.outputBox.config(yscrollcommand=scrollbar.set)
 
         # Input related items
-        entryLabel = tk.Label(mainFrame, text="Enter your text below!", font=FONT)
-        entryLabel.grid(row=4, column=2, columnspan=2, sticky="")
         self.userInput = tk.Entry(mainFrame)
         self.userInput.grid(row=5, column=1, columnspan=4, sticky="EW")
         sendButton = tk.Button(mainFrame, text="Send message", command=lambda: self.getResponse())
