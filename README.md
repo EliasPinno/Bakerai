@@ -4,7 +4,7 @@
 
 ## Features implemented in individual project:
 * ##    Google Translate
-    Using the python google_trans_new package, I used the google_translator() object to allow users to change the language that they send and recieve their messages in. Users are able to select a language, which changes the output and input languages of future messages (though it does not change existing messages in the chat). For our bot to work the same, the incoming messages are translated to english, given to the AI, and the response is translated to the target language (since our model was trained on english)
+    Using the python google_trans_new package, I used the google_translator() object to allow users to change the language that they send and receive their messages in. Users are able to select a language, which changes the output and input languages of future messages (though it does not change existing messages in the chat). For our bot to work the same, the incoming messages are translated to English, given to the AI, and the response is translated to the target language (since our model was trained on English)
 
     This language selection also changes the language for the Wikipedia API.
 
