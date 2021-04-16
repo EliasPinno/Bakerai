@@ -87,7 +87,10 @@ def getTopSearch(userMessage: str):
     # Find the top search result
     search = wikipedia.search(userMessage)
     # Return the corresponding object to the top search result
-    return wikipedia.page(search[0]), wikipedia.summary(search[0], sentences=3)
+    try:
+        return wikipedia.page(search[0]), wikipedia.summary(search[0], sentences=3)
+    except:
+        return (-1, -1)
 
 def setWikiLan(lan: str):
     wikipedia.set_lang(lan)
@@ -95,6 +98,6 @@ def setWikiLan(lan: str):
 
 if __name__ == "__main__":
     #start()
-    #client = c.bakerClient()
-    #client.mainloop()
-    print(translate("Hello","en","fr"))
+    client = c.bakerClient()
+    client.mainloop()
+    #print(translate("Hello","en","fr"))

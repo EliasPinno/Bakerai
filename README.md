@@ -2,7 +2,18 @@
 
 ## Bakerai is an online chatbot for a imaginary bakery - SAKURA. Bakerai acts as your online assistant to provide customer information they need about SAKURA without leaving the comfort of their home.
 
-## Features implemented in A3:
+## Features implemented in individual project:
+* ##    Google Translate
+    Using the python google_trans_new package, I used the google_translator() object to allow users to change the language that they send and recieve their messages in. Users are able to select a language, which changes the output and input languages of future messages (though it does not change existing messages in the chat). For our bot to work the same, the incoming messages are translated to english, given to the AI, and the response is translated to the target language (since our model was trained on english)
+
+    This language selection also changes the language for the Wikipedia API.
+
+* ##    Wikipedia API
+    Using the python wikipedia package, I used the package to allow the users to query Wikipedia for information. Using "Wiki 'text'" users are able to get the bot to return information about wikipedia.
+
+    One of the challenging portions of the assignment was translating my "wrapping" text around the wikipedia articles. These have to dynamically translate with the users selected language, which involves a lot of calling the translation function.
+
+    The wiki response includes the URL to the found article, the title of the article, and the first 3 sentences in the wikipedia articles summary.
 
 
 * ###   GUI
