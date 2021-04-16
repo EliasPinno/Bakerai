@@ -9,6 +9,11 @@
     This language selection also changes the language for the Wikipedia API.
 
 * ##    Wikipedia API
+    Using the python wikipedia package, I used the package to allow the users to query Wikipedia for information. Using "Wiki 'text'" users are able to get the bot to return information about wikipedia.
+
+    One of the challenging portions of the assignment was translating my "wrapping" text around the wikipedia articles. These have to dynamically translate with the users selected language, which involves a lot of calling the translation function.
+
+    The wiki response includes the URL to the found article, the title of the article, and the first 3 sentences in the wikipedia articles summary.
 
 
 * ###   GUI
