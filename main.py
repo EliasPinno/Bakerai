@@ -7,6 +7,7 @@ from NN import convert_input_to_bow
 from NN import model
 import clientGUI as c
 from google_trans_new import google_translator  
+import wikipedia
 # these are the model and function for chatting
 # from process_data import ..... (you can load functions, varibles....)
 
@@ -81,6 +82,16 @@ def output_depending_on_sentiment(sentiment,output):
 def translate(userMessage: str, src: str, tgt: str):
     reply = TRANSLATOR.translate(userMessage, lang_src=src, lang_tgt=tgt)  
     return reply
+
+def getTopSearch(userMessage: str):
+    # Find the top search result
+    search = wikipedia.search(userMessage)
+    # Return the corresponding object to the top search result
+    return wikipedia.page(search[0]), wikipedia.summary(search[0], sentences=3)
+
+def setWikiLan(lan: str):
+    wikipedia.set_lang(lan)
+
 
 if __name__ == "__main__":
     #start()

@@ -68,17 +68,36 @@ class bakerClient(tk.Tk):
             return
         # Clear the user input
         self.userInput.delete(0, "end")
-        # Translate input to english
+        # Check if the wiki command is in the chat
+        if "wiki " == userMessage.lower()[0:5]:
+            # Send user message without the wiki portion    
+            wikiReply = self.wikiResponse(userMessage[5:], shortLan) 
+            self.addExchange(userMessage, wikiReply)
+            return
+        
+        # Translate input to english to send to our bot
         userEnglish = m.translate(userMessage, shortLan, 'en')
         # Get our reply
-        reply = m.getFinalOutput(self.loaded_clf,userMessage) + "\n"
+        reply = m.getFinalOutput(self.loaded_clf,userEnglish)
         # Translate reply to proper language
-        replyLan = "BakerAI: " + m.translate(reply, 'en', shortLan)
-        userEnglish = "You: " + userEnglish + "\n"
-        # Send reply to client
+        replyLan = "BakerAI: " + m.translate(reply, 'en', shortLan) + "\n"
+        self.addExchange(userMessage,replyLan)
+
+    
+    def wikiResponse(self, userMessage, lan):
+        m.setWikiLan(lan)
+        topResult, summary = m.getTopSearch(userMessage)
+        outputStr = f'Are you talking about {topResult.title}? Here is what I know about this based on wikipedia. \nA link to the page is: {topResult.url}\nHere is the first 3 sentences of the summary:\n{summary}'
+        return outputStr 
+    
+    def addExchange(self, userStr, botStr):
+        # Append who is speaking to the string
+        userStr = f'You: {userStr}\n'
+        botStr = f'BakerAI: {botStr}\n'
+        # Add the exchange to the window
         self.outputBox.configure(state="normal")
-        self.outputBox.insert(tk.END, userEnglish) 
-        self.outputBox.insert(tk.END, replyLan) 
+        self.outputBox.insert(tk.END, userStr) 
+        self.outputBox.insert(tk.END, botStr) 
         self.outputBox.configure(state="disabled")
 
 
