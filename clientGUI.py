@@ -30,9 +30,12 @@ class bakerClient(tk.Tk):
         self.languages = {"English": "en", "Français": "fr", "Русский": "ru", "Español": "es", "Suomi": "fi"}
         
         # Elements of the main frame #
-        # Title
+        # Title label
         title = tk.Label(mainFrame, text="Welcome to Sakura's very own BakerAI!", font=TITLE_FONT)
         title.grid(row=1,column=1,columnspan=7)
+        # Add labels for input
+        entryLabel = tk.Label(mainFrame, text="Enter your text below! Type 'Wiki <text>' to query Wikipedia.", font=FONT)
+        entryLabel.grid(row=4, column=1, columnspan=4, sticky="")
         # What we will change to show output
         self.outputBox = tk.Text(mainFrame, font=FONT)
         self.outputBox.grid(row=3, column=1, columnspan=7, rowspan=1, sticky="")
@@ -44,8 +47,6 @@ class bakerClient(tk.Tk):
         self.outputBox.config(yscrollcommand=scrollbar.set)
 
         # Input related items
-        entryLabel = tk.Label(mainFrame, text="Enter your text below!", font=FONT)
-        entryLabel.grid(row=4, column=2, columnspan=2, sticky="")
         self.userInput = tk.Entry(mainFrame)
         self.userInput.grid(row=5, column=1, columnspan=4, sticky="EW")
         sendButton = tk.Button(mainFrame, text="Send message", command=lambda: self.getResponse())
@@ -68,17 +69,36 @@ class bakerClient(tk.Tk):
             return
         # Clear the user input
         self.userInput.delete(0, "end")
-        # Translate input to english
+        # Check if the wiki command is in the chat
+        if "wiki " == userMessage.lower()[0:5]:
+            # Send user message without the wiki portion    
+            wikiReply = self.wikiResponse(userMessage[5:], shortLan) 
+            self.addExchange(userMessage, wikiReply)
+            return
+        
+        # Translate input to english to send to our bot
         userEnglish = m.translate(userMessage, shortLan, 'en')
         # Get our reply
-        reply = m.getFinalOutput(self.loaded_clf,userMessage) + "\n"
+        reply = m.getFinalOutput(self.loaded_clf,userEnglish)
         # Translate reply to proper language
-        replyLan = "BakerAI: " + m.translate(reply, 'en', shortLan)
-        userEnglish = "You: " + userEnglish + "\n"
-        # Send reply to client
+        replyLan = "BakerAI: " + m.translate(reply, 'en', shortLan) + "\n"
+        self.addExchange(userMessage,replyLan)
+
+    
+    def wikiResponse(self, userMessage, lan):
+        m.setWikiLan(lan)
+        topResult, summary = m.getTopSearch(userMessage)
+        outputStr = f'Are you talking about {topResult.title}? Here is what I know about this based on wikipedia. \nA link to the page is: {topResult.url}\nHere is the first 3 sentences of the summary:\n{summary}'
+        return outputStr 
+    
+    def addExchange(self, userStr, botStr):
+        # Append who is speaking to the string
+        userStr = f'You: {userStr}\n'
+        botStr = f'BakerAI: {botStr}\n'
+        # Add the exchange to the window
         self.outputBox.configure(state="normal")
-        self.outputBox.insert(tk.END, userEnglish) 
-        self.outputBox.insert(tk.END, replyLan) 
+        self.outputBox.insert(tk.END, userStr) 
+        self.outputBox.insert(tk.END, botStr) 
         self.outputBox.configure(state="disabled")
 
 
