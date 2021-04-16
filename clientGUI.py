@@ -88,7 +88,10 @@ class bakerClient(tk.Tk):
     def wikiResponse(self, userMessage, lan):
         m.setWikiLan(lan)
         topResult, summary = m.getTopSearch(userMessage)
-        outputStr = f'Are you talking about {topResult.title}? Here is what I know about this based on wikipedia. \nA link to the page is: {topResult.url}\nHere is the first 3 sentences of the summary:\n{summary}'
+        if topResult != -1:
+            outputStr = f'{m.translate("Are you talking about","en",lan)} {topResult.title}? {m.translate("Here is what I know about this based on wikipedia.","en",lan)} \n{m.translate("A link to the page is:","en",lan)} {topResult.url}\n{m.translate("Here is the first 3 sentences of the summary:","en",lan)}\n{summary}'
+        else:
+            outputStr = m.translate("I don\'t have any hits for that search, sorry!","en",lan)
         return outputStr 
     
     def addExchange(self, userStr, botStr):
